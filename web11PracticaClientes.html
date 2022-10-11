@@ -27,6 +27,7 @@
                     //Los metemos a la caja
                     botones.appendTo("#caja");
                 });
+
                 //Funcion para el clickado
                 $("button").click(function() {
                 var  nombreCliente = $(this).text();
@@ -36,7 +37,10 @@
 
                     if($(data).find(filtro).length !== 0){
 
+                        //Definimos el elemento de busqueda
                        var elemento = $(data).find(filtro).first();
+
+                       //Recogemos y definimos las variables
                        var nombre = $(elemento).parent().find("NOMBRE").first().text();
                        var direccion = $(elemento).parent().find("DIRECCION").first().text();
                        var email = $(elemento).parent().find("EMAIL").first().text();
@@ -44,7 +48,7 @@
                        var web = $(elemento).parent().find("PAGINAWEB").first().text();
                        var imagen = $(elemento).parent().find("IMAGENCLIENTE").first().text();
 
-                        //Definimos
+                        //Definimos los campos y recogemos todos los datos del cliente atraves de su "padre(parent)"
                        html += "<p>El id del cliente es:" +elemento.parent().attr("IDCLIENTE") + "</p>";
                        html += "<p>El nombre del cliente es:" +nombre+ "</p>";
                        html += "<p>La dirección del cliente es:" +direccion+ "</p>";
@@ -60,6 +64,7 @@
                         console.log("b");                       
 
                     }
+                    //Mostramos todos los datos del cliente
                     $("#mensaje").html(html);
                 });
             });
