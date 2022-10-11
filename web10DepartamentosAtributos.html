@@ -66,7 +66,7 @@
                     //Definimos el html y su filtro que es
                     var html ="";
                     var filtro = "DEPT[DEPT_NO="+ id + "]";
-                    //Capturamos el nodo
+                    //Capturamos el nodo y recogemos los nombres y localidad
                     var nodoDept = $(data).find(filtro).first();
                     var nombre = $(nodoDept).find("DNOMBRE").first().text();
                     var localidad = $(nodoDept).find("LOC").first().text();
