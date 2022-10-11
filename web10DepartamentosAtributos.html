@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departamentos Atributos</title>
+</head>
+<body>
+    <h1>Departamentos Atributos</h1>
+
+    <label >Introduzca ID</label>
+    <input type="text" id="cajaId">
+    <button type="button" id="botonBuscarId">Buscar Departamentos</button>
+    <hr>
+
+    <label>Introduzca localidad</label>
+    <input type="text" id="cajaLocalidad">
+    <button type="button" id="botonLocalidad">Buscar localidad</button>
+
+    <button type="button" id="botonDepartamentos">Cargar Departamentos</button>
+    <table id="tablaDepartamentos">
+        <thead>
+            <tr>
+                <th>NUMERO</th>
+                <th>NOMBRE</th>
+                <th>LOCALIDAD</th>
+            </tr>   
+
+        </thead>
+        <tbody></tbody>
+    </table>
+    <h1 style="color:red" id="mensaje"></h1>
+    <script src="js/jquery-3.6.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            $("#botonLocalidad").click(function() {
+                var loc = $("#cajaLocalidad").val();
+                $.get("documents/departamentos.xml", function(data) {
+                    var filtro = "LOC:contains(" + loc + ")";
+                    var html = "";
+
+                    if($(data).find(filtro).length == 0){
+
+                        html = "No existen departamentos en " + loc;
+
+                    }else{
+                        
+                        $(data).find(filtro).each(function() {
+                            html += $(this).text()+ ",";
+                        });
+
+                    }
+                    $("#mensaje").text(html);
+                });
+            });
+
+            $("#botonBuscarId").click(function() {
+
+                //Definimos y recogemos la variable  ID y su valor
+                var id = $("#cajaId").val();
+                $.get("documents/departamentos.xml", function(data) {
+                    //Definimos el html y su filtro que es
+                    var html ="";
+                    var filtro = "DEPT[DEPT_NO="+ id + "]";
+                    //Capturamos el nodo
+                    var nodoDept = $(data).find(filtro).first();
+                    var nombre = $(nodoDept).find("DNOMBRE").first().text();
+                    var localidad = $(nodoDept).find("LOC").first().text();
+
+                    html += "<tr>";
+                    html += "<td>" +nodoDept.attr("DEPT_NO") + "</td>";
+                    html += "<td>" +nombre + "</td>";
+                    html+= "<td>" +localidad + "</td>";
+                    html += "</tr>";
+                    //Lo pintamos
+                    $("#tablaDepartamentos tbody").html(html);
+                    
+                });
+            });
+
+            $("#botonDepartamentos").click(function(){
+                console.log("Departamentos Atributos Clicked");
+                $.get('documents/departamentos.xml', function(data) {
+                    
+                    var html="";
+                    //Necesitamos recorrer cada etiqueta<dept>
+                    $(data).find("DEPT").each(function() {
+
+                        html += "<tr>";
+                        //Recuperamos el numero de dept
+                        var numero = $(this).attr("DEPT_NO");
+                        var nombre = $(this).find("DNOMBRE").first().text();
+                        var localidad = $(this).find("LOC").first().text();
+
+                        html += "<td> "+ numero + "</td>";    
+                        html += "<td>" + nombre + "</td>";
+                        html += "<td>" + localidad + "</td>";
+
+                        html +="</tr>";
+                    });
+                    $("#tablaDepartamentos tbody").html(html);
+                });
+            });
+
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML</title>
+</head>
+<body>
+    <h1>LECTURA DOCUMENTOS XML</h1>
+    <button type="button" id="botonEmpleados">Cargar empleados</button>
+    <ul id="listaEmpleados"></ul>
+    <script src="js/jquery-3.6.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#botonEmpleados").click(function() {
+                console.log("Antes del servicio");
+                $.get("documents/empleados.xml", function(data){
+                    console.log("leyendo");
+                    //Vamos a dibujar todos los apellidos
+                    var html = "";
+                    //Buscamos todas las etiquetas apellido
+                    $(data).find("APELLIDO").each(function(){
+                        //Recuperamos el contenido del tag
+                        var apellido = $(this).text();
+                        html += "<li>" + apellido + "</li>";
+                    });
+                    $("#listaEmpleados").html(html);
+                });
+            });
+            console.log("Despues del servicio");
+        });
+    </script>
+</body>
+</html>
