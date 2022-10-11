@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear botones y fotos</title>
+    <style>
+        img{width:30% ; height:30% ;}
+    </style>
+</head>
+<body>
+    <h1>Crear botones y fotos</h1>
+    <input type="range" id="rango" min="1" max="10" value="1"/>
+        
+    <div id="padre"></div>
+
+    <script src="js/jquery-3.6.1.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $("#rango").change(function(){
+                //Definimos la variable rango y recogemos su valor
+                var rango =$("#rango").val();
+                var numeroRango = parseInt(rango);
+                $("#valorRango").text(numeroRango);
+                //Definimos la variable padre y recogemos su valor
+                var padre = $("#padre");
+
+                //Recorremos todos los numeros
+                for (let i = 0; i < numeroRango; i++) {
+                    //Creamos las imagenes
+                    var imagen = $("<img>", {
+                        "id" : "img" + i
+                    });
+                    //Creamos los botones
+                    var btn = $("<button>", {
+                        "imagen" : "img" + i
+                    });
+                    btn.text(numeroRango);
+                    //Definimos el atributo src a la imagen
+                    imagen.attr("src", "fotos/cp2.jpg");
+                    //Metemos la imagen en el div padre
+                    imagen.appendTo(padre);
+                    btn.appendTo(padre);    
+
+                    btn.click(function(){
+                    var imagenId = $(this).attr("imagen");
+                    var btnId = $(this).attr("id");
+                    //
+                    $(`#${imagenId}`).attr("src", "fotos/cp3.jpeg");
+                    
+                
+                })
+
+                
+                }
+
+            });
+    })
+            
+
+    </script>
+</body>
+</html>
