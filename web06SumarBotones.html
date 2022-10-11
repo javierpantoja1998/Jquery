@@ -16,16 +16,23 @@
 
     $(document).ready(function(){
         var suma=0;
-         //Recorremos todos los botones con un bucle
+         //Recorremos todos los botones con un bucle para que vaya sumando botones
          for (let i = 0; i < 9; i++){
             //Recuperamos cada boton individual
+
+            //Creamos el valor aleatorio para cada boton
             var aleatorio = Math.floor(Math.random() * 10);
+            //Creamos el boton
             var btn =  $("<button>");
+            //Definimos el valor del boton con el numero aleatorio
             btn.attr("value",aleatorio);
+            //Definimos que el contenido del texto sea ese numero aleatorio
             btn.text(aleatorio);
+            //Recogemos la caja para meter el boton en ella
             var caja = $("#caja");
             caja.append(btn);
-
+            
+            //Creamos la funcion para que sume
             btn.on("click", function(){
                 suma+=parseInt($(this).val());
                 $("#num").text(suma);
