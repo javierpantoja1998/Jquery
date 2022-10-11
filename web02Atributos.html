@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar imagens con atributos</title>
+    <style>
+        img{width:30% ; height:30% ;}
+    </style>
+</head>
+<body>
+    
+
+    <h1>Cambiar Imagenes con Jquery</h1>
+    <img src="fotos/cp3.jpeg">
+    <img src="fotos/cp3.jpg">
+
+    <script src="js/jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        //Accedemos a las imagenes
+        //Cuanndo el raton este fuera se muestra la foto cp2 (un coche)
+        $("img").mouseout(function(){
+            $(this).attr("src", "fotos/cp2.jpg");
+        })
+        //Cuanndo el raton este dentro se muestra la foto cp3 (anime)
+        $("img").mouseover(function(){
+            $(this).attr("src", "fotos/cp3.jpeg");
+        })
+
+    </script>
+</body>
+</html>

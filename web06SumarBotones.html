@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumar Botones Aleatorios</title>
+</head>
+<body>
+    <h1>Eventos delegados, SUMAR BOTONES JQUERY</h1>
+            <h1 style="color:blue" id="num"> </h1>
+
+    <div id="caja"></div>
+    <script src="js/jquery-3.6.1.min.js"></script>
+    <script>
+
+    $(document).ready(function(){
+        var suma=0;
+         //Recorremos todos los botones con un bucle
+         for (let i = 0; i < 9; i++){
+            //Recuperamos cada boton individual
+            var aleatorio = Math.floor(Math.random() * 10);
+            var btn =  $("<button>");
+            btn.attr("value",aleatorio);
+            btn.text(aleatorio);
+            var caja = $("#caja");
+            caja.append(btn);
+
+            btn.on("click", function(){
+                suma+=parseInt($(this).val());
+                $("#num").text(suma);
+            })
+            
+        }
+        
+    });
+       
+
+        
+
+
+    </script>
+</body>
+</html>

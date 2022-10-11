@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumar numeros</title>
+</head>
+<body>
+    <h1>Sumar numeros Jquery</h1>
+
+    <label>Numero 1:</label>
+    <input type="text" id="caja1"></input>
+
+    <label>Numero 1:</label>
+    <input type="text" id="caja2"></input>
+
+    <button type="button" id="botonSumar"> Sumar números: </button>
+    <h1 id="resultado"></h1>
+
+
+    <script src="js/jquery-3.6.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#botonSumar").click(function(){
+                //Definimos variables
+                var num1 = $("#caja1").val();
+                var num2 = $("#caja2").val();
+
+                //Los tenemos que convertir en Numero ya que son String
+                var suma = parseInt(num1) + parseInt(num2);
+
+                //Dibujamos sobre el control h1
+                $("#resultado").text("la suma es: " + suma);
+
+                //Cambiamos el estilo si es positivo o negativo (con jquery)
+                if(suma >= 0){
+                    //Accedemos al resultado y a su css y se lo modificamos
+                    $("#resultado").css("color", "green");
+                }else{
+                    $("#resultado").css("color", "red");
+                }
+            })
+        })
+        
+
+    </script>
+</body>
+</html>
