@@ -26,15 +26,20 @@
             //Definimos la variable padre y recogemos su valor
             var padre = $("#padre");
 
+            //Recorremos todos los numeros
             for(var i=1; i<=numeroRango; i++){
-                console.log("hola");
+                //Creamos la imagen
                 var imagen = $("<img>");
+                //Definimos el atributo src a la imagen
                 imagen.attr("src", "fotos/cp2.jpg");
+                //Metemos la imagen en el div padre
                 imagen.appendTo(padre);
+                //Defenimos la función para cambiar el atributo cuando el raton salga
                 imagen.mouseover(function(){
                     $(this).attr("src", "fotos/cp3.jpeg");
                 
                 })
+                //Defenimos la función para cambiar el atributo cuando el raton entre
                 imagen.mouseout(function(){
                     $(this).attr("src", "fotos/cp2.jpg");
                 
