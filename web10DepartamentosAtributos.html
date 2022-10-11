@@ -35,7 +35,9 @@
     <script>
         $(document).ready(function() {
 
+            
             $("#botonLocalidad").click(function() {
+                //Recogemos el texto de localidad
                 var loc = $("#cajaLocalidad").val();
                 $.get("documents/departamentos.xml", function(data) {
                     var filtro = "LOC:contains(" + loc + ")";
@@ -91,7 +93,9 @@
                         html += "<tr>";
                         //Recuperamos el numero de dept
                         var numero = $(this).attr("DEPT_NO");
+                        //Definimos y recogemos el nombre del empleado                      
                         var nombre = $(this).find("DNOMBRE").first().text();
+                        //Definimos y recogemos la localidad del empleado 
                         var localidad = $(this).find("LOC").first().text();
 
                         html += "<td> "+ numero + "</td>";    

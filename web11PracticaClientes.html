@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practica Clientes</title>
+</head>
+<body>
+    <h1>Practica Clientes</h1>
+    <div id="caja"></div>
+
+
+    <script src="js/jquery-3.6.1.min.js"></script>
+    <script>
+
+        $(document).ready(function() {
+            //Cogemos el documento departamentos para trabajar con el
+            $.get("documents/ClientesXML.xml", function(data) {
+                //En los datos donde se encuentre "CLIENTE" haremos:
+                $(data).find("CLIENTE").each(function() {
+                    //Creamos los botones segun los nombres
+                    var botones = $("<button>");
+                    //Metemos los nombres en los botones
+                    botones.text($(this).find("NOMBRE").first().text());
+                    //Los metemos a la caja
+                    botones.appendTo("#caja");
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
