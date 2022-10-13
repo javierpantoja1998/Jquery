@@ -29,8 +29,8 @@
                 <th>Dirección</th>
                 <th>Telefono</th>
                 <th>Camas</th>
-                <th><button type="button">Eliminar</button></th>
                 <th>Modificar</th>
+                <th>Eliminar</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -60,8 +60,8 @@
                         html += "<td>" + hospital.direccion + "</td>";
                         html += "<td>" + hospital.telefono + "</td>";
                         html += "<td>" + hospital.camas + "</td>";
-                        html += "<td>" + "<button type=`button` id=`botonModificar`>" + "</button>" +"</td>";
-                        html += "<td>" + "<button type=`button` id=`botonEliminar`>" + "</button>" +"</td>";
+                        html += "<td>" + "<button type=`button` id=`botonModificar´>Modificar" + "</button>" +"</td>";
+                        html += "<td>" + "<button type=`button` id=`botonEliminar´>Eliminar" + "</button>" +"</td>";
                         html += "</tr>";
                     });
                     
@@ -115,19 +115,23 @@
             }); 
 
             function getJsonHospital() {
-            var id = parseInt($("#cajaId").val());
-            var nom = $("#cajaNombre").val();
-            var dir = $("#cajaDireccion").val();
-            var telef = $("#cajaTelefono").val();
-            var camas = $("#cajaCamas").val();
 
-            var hospital = new Object();
-            hospital.idhospital = id;
-            hospital.nombre = nom;
-            hospital.direccion = dir;
-            hospital.telefono = telef;
-            hospital.camas = camas;
-            var dataJson = JSON.stringify(hospital);
+             var id = parseInt($("#cajaId").val());
+             var nom = $("#cajaNombre").val();
+             var dir = $("#cajaDireccion").val();
+             var telef = $("#cajaTelefono").val();
+             var camas = $("#cajaCamas").val();
+
+             var hospital = new Object();
+
+             hospital.idhospital = id;
+             hospital.nombre = nom;
+             hospital.direccion = dir;
+             hospital.telefono = telef;
+             hospital.camas = camas;
+
+             var dataJson = JSON.stringify(hospital);
+             
             return dataJson;
         }
 
@@ -135,7 +139,7 @@
                 var datos = getJsonHospital();
                 var request = "/webresources/hospitales/{id}";
                 $.ajax({
-                    "url":url + request,
+                    "url":urlHospital + request,
                     "type":"PUT",
                     "data":datos,
                     "contentType":"application/json",
@@ -151,7 +155,7 @@
                 var id = $("#cajaId").val();
                 var request = "/webresources/hospitales/delete/{id}" + id;
                 $.ajax({
-                    "url": url + request,
+                    "url": urlHospital + request,
                     "type": "DELETE",
                     success: function(){
                         console.log("Eliminado");
