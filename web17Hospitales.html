@@ -60,8 +60,8 @@
                         html += "<td>" + hospital.direccion + "</td>";
                         html += "<td>" + hospital.telefono + "</td>";
                         html += "<td>" + hospital.camas + "</td>";
-                        html += "<td>" + "<button type=`button` id=`botonModificar´>Modificar" + "</button>" +"</td>";
-                        html += "<td>" + "<button type=`button` id=`botonEliminar´>Eliminar" + "</button>" +"</td>";
+                        html += "<td>" + "<button type='button' id='botonModificar'>Modificar" + "</button>" +"</td>";
+                        html += "<td>" + "<button type='button' id='botonEliminar'>Eliminar" + "</button>" +"</td>";
                         html += "</tr>";
                     });
                     
@@ -131,7 +131,7 @@
              hospital.camas = camas;
 
              var dataJson = JSON.stringify(hospital);
-             
+
             return dataJson;
         }
 
