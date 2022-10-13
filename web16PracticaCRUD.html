@@ -71,7 +71,7 @@
                         
                         //Definimos la url del cliente
                         var urlCliente = "https://apiempleadosspgs.azurewebsites.net/api/Empleados/EmpleadosDepartamento/"+idDepartamento;
-
+                        var html = " ";
                         $.ajax({
                             "url": urlCliente ,
                             "dataType": "json",
@@ -83,14 +83,9 @@
                                     html += "<td>" + cliente.oficio + "</td>";
                                     html += "<td>" + cliente.salario + "</td>";
                                     html += "<td>" + cliente.departamento + "</td>";
-                                    
-
-                                
-
-                                
-                                html += "</tr>";
+                                    html += "</tr>";
                             });
-                            $("#tablaClientes").html(html);
+                            $("#tablaClientes tbody").html(html);
                             }   
                         });
 
