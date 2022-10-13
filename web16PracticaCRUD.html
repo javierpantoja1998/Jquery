@@ -37,19 +37,24 @@
 
     <script>
 
+        //Definimos la variable con la url del departamento
         var urlDepartamento = "https://apicruddepartamentoscore.azurewebsites.net/";
         
 
         //Funcion para cargar los departamentos
         function cargarDepartamentos() {
+            //Definimos la variable con la peticion a la api de departamentos
             var request = "/api/departamentos";
+            //Accedemos a los datos de la api con ajax()
             $.ajax({
                 "url": urlDepartamento + request,
                 "method": "GET",
                 "dataType": "json"
                 , success: function (data) {
+                    //Creamos la variable html para "pintar" en el html
                     var html = "";
                     //Creamos la tabla recorriendo los datos de la api
+                    //Creamos la funcion pasandole las variables del indice(index) y la de departamento(dept)
                     $.each(data, function (index, dept) {
                         html += "<tr>";
                         html += "<td>" + dept.numero + "</td>";
@@ -62,20 +67,27 @@
                         console.log(dept.numero);
                         html += "</tr>";
                     });
+                    // Mostramos en el tablaDepartamentos la tabla
                     $("#tablaDepartamentos tbody").html(html);
 
+                    //Creamos la funcion para el clickado del boton 
                     $("button").click(function () {
                         console.log(this);
-                        //Definimos la varible de IDdepartamento recogiendo la data-key
-                        var idDepartamento =$(this).data("key");
+
+                        //Definimos la varible de IDdepartamento recogiendo la data-key con $(this).data("key")
+                        var idDepartamento = $(this).data("key");
                         
                         //Definimos la url del cliente
                         var urlCliente = "https://apiempleadosspgs.azurewebsites.net/api/Empleados/EmpleadosDepartamento/"+idDepartamento;
+                        //Creamos la variable html para "pintar" en el html
                         var html = " ";
+                        //Accedemos a los datos de la api con ajax()
                         $.ajax({
                             "url": urlCliente ,
                             "dataType": "json",
                             "type": "GET",
+                            //Creamos la tabla recorriendo los datos de la api
+                            //Creamos la funcion pasandole las variables del indice(index) y la de departamento(dept)
                             success: function(data){
                                 $.each(data, function (index, cliente) {
                                     html += "<tr>";
@@ -85,6 +97,7 @@
                                     html += "<td>" + cliente.departamento + "</td>";
                                     html += "</tr>";
                             });
+                            // mostramos en  tablaClientes la tabla
                             $("#tablaClientes tbody").html(html);
                             }   
                         });
