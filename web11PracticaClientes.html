@@ -37,8 +37,11 @@
 
                 //Funcion para el clickado
                 $("button").click(function() {
+
                 var  nombreCliente = $(this).text();
+
                 $.get("documents/ClientesXML.xml", function(data) {
+                    
                     var filtro = "NOMBRE:contains(" + nombreCliente + ")";
                     var html = "";
 

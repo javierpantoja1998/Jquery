@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLIENTES JSON</title>
+</head>
+<body>
+    <h1>LECTURA JSON COMPUESTO</h1>
+
+    <button type="button" id="botonLeer">Leer documento compuesto</button>
+
+    <div id="resultado"></div>
+    
+    <script src="js/jquery-3.6.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#botonLeer").click(function () {
+                $.ajax({
+
+                    "url": "documents/clientes.json" ,
+                     "method": "GET" ,
+                     "dataType" : "json", 
+
+                     "success": function (data) {
+                        console.log("leyendo servicio");
+                        var html = "";
+
+                        $.each(data.clientes,function(indice,cliente){
+
+                            //Propiedades dinamicas
+                            var nombre = cliente.nombre;
+
+                            //Dibujamos
+                            html += "<h1>" + nombre + "</h1>";
+                        });
+                        $("#resultado").html(html);
+                     }, 
+                     "error": function(error){
+                        console.log("Error en el servicio");
+                     }
+                        
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON SIMPLE</title>
+</head>
+<body>
+    <h1>LECTURA JSON SIMPLE</h1>
+    <button type="button" id="botonLeer">Leer documento simple</button>
+
+    <ul id="tareas"></ul>
+    <script src="js/jquery-3.6.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {	
+
+            //Creamos la función para cuando se clicke el boton
+            $("#botonLeer").click(function () {
+                $.getJSON("documents/tareas.json", function (data) {
+
+                    //Creamos las variables
+                    var html = "";
+
+                    //La key y la value se pueden llamar como queramos
+                    //En esto caso son los valores de cada clave
+                    $.each(data, function (key, value) {
+
+                        html += '<li>Key:' + key + ", Value:" + value + '</li>';
+                    });
+                    $("#tareas").html(html);
+                }); 
+            });
+        });
+    </script>
+</body>
+</html>

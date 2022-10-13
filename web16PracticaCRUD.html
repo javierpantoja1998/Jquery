@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practica CRUD departamentos y Empleados</title>
+</head>
+<body>
+    <h1>Practica CRUD departamentos y Empleados</h1>
+    <table border="1" id="tablaDepartamentos">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Nombre</th>
+                <th>Localidad</th>
+                <th><a href=""> Accion</a></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <table border="1" id="tablaClientes">
+        <thead>
+            <tr>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+                <th> Departamento</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+
+    <script src="js/jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        var urlDepartamento = "https://apicruddepartamentoscore.azurewebsites.net/";
+        
+
+        //Funcion para cargar los departamentos
+        function cargarDepartamentos() {
+            var request = "/api/departamentos";
+            $.ajax({
+                "url": urlDepartamento + request,
+                "method": "GET",
+                "dataType": "json"
+                , success: function (data) {
+                    var html = "";
+                    //Creamos la tabla recorriendo los datos de la api
+                    $.each(data, function (index, dept) {
+                        html += "<tr>";
+                        html += "<td>" + dept.numero + "</td>";
+                        html += "<td>" + dept.nombre + "</td>";
+                        html += "<td>" + dept.localidad + "</td>";
+                        html += "<td> <button type='button' data-key='"+dept.numero+"'>Empleados</button>"+"</td>";
+
+                        console.log(dept.numero);
+
+                        console.log(dept.numero);
+                        html += "</tr>";
+                    });
+                    $("#tablaDepartamentos tbody").html(html);
+
+                    $("button").click(function () {
+                        console.log(this);
+                        //Definimos la varible de IDdepartamento recogiendo la data-key
+                        var idDepartamento =$(this).data("key");
+                        
+                        //Definimos la url del cliente
+                        var urlCliente = "https://apiempleadosspgs.azurewebsites.net/api/Empleados/EmpleadosDepartamento/"+idDepartamento;
+
+                        $.ajax({
+                            "url": urlCliente ,
+                            "dataType": "json",
+                            "type": "GET",
+                            success: function(data){
+                                $.each(data, function (index, cliente) {
+                                    html += "<tr>";
+                                    html += "<td>" + cliente.apellido + "</td>";
+                                    html += "<td>" + cliente.oficio + "</td>";
+                                    html += "<td>" + cliente.salario + "</td>";
+                                    html += "<td>" + cliente.departamento + "</td>";
+                                    
+
+                                
+
+                                
+                                html += "</tr>";
+                            });
+                            $("#tablaClientes").html(html);
+                            }   
+                        });
+
+                    });
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+            cargarDepartamentos();
+
+            
+        });
+
+    </script>
+
+    
+</body>
+</html>

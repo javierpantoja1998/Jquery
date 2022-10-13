@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Ejemplo CRUD jquey json</h1>
+    <label>Número: </label>
+    <input type="text" id="cajanumero" />
+    <label>Nombre </label>
+    <input type="text" id="cajanombre" />
+    <label>Localidad: </label>
+    <input type="text" id="cajalocalidad" />
+    </hr>
+    <button type="button" id="botoninsertar">Insertar</button>
+    <button type="button" id="botonmodificar">Modificar</button>
+    <button type="button" id="botoneliminar">Eliminar</button>
+    <hr />
+    <table border="1" id="tabladepartamentos">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Nombre</th>
+                <th>Localidad</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="js/jquery-3.6.1.min.js"></script>
+    <script>
+        var url = "https://apicruddepartamentoscore.azurewebsites.net/";
+        //Funcion para cargar los departamentos
+        function cargarDepartamentos() {
+            var request = "/api/departamentos";
+            $.ajax({
+                "url": url + request,
+                "method": "GET",
+                "dataType": "json"
+                , success: function (data) {
+                    var html = "";
+                    //Creamos la tabla recorriendo los datos de la api
+                    $.each(data, function (index, dept) {
+                        html += "<tr>";
+                        html += "<td>" + dept.numero + "</td>";
+                        html += "<td>" + dept.nombre + "</td>";
+                        html += "<td>" + dept.localidad + "</td>";
+                        html += "</tr>";
+                    });
+                    $("#tabladepartamentos tbody").html(html);
+                }
+            });
+        }
+        function getJsonDepartamento() {
+            var num = parseInt($("#cajanumero").val());
+            var nom = $("#cajanombre").val();
+            var loc = $("#cajalocalidad").val();
+            var departamento = new Object();
+            departamento.numero = num;
+            departamento.nombre = nom;
+            departamento.localidad = loc;
+            var dataJson = JSON.stringify(departamento);
+            return dataJson;
+        }
+        //Funcion para eliminar
+        $("#botoneliminar").click(function () {
+            var numero = $("#cajanumero").val();
+            var request = "api/departamentos/" + numero;
+            $.ajax({
+                "url": url + request,
+                "type": "DELETE",
+                success: function(){
+                    console.log("Eliminado");
+                    cargarDepartamentos();
+                }
+            })
+        });
+        $(document).ready(function () {
+            cargarDepartamentos();
+            $("#botonmodificar").click(function(){
+                var datos = getJsonDepartamento();
+                var request = "/api/departamentos";
+                $.ajax({
+                    "url":url + request,
+                    "type":"PUT",
+                    "data":datos,
+                    "contentType":"application/json",
+                    success:function(){
+                        console.log("Modificado");
+                        cargarDepartamentos();
+                    }
+                })
+            });
+            $("#botoninsertar").click(function () {
+                var num = parseInt($("#cajanumero").val());
+                var nom = $("#cajanombre").val();
+                var loc = $("#cajalocalidad").val();
+                //debemos enviar un objeto json al metodo post
+                //creamos un nuevo objeto javascript
+                var departamento = new Object();
+                //las propiedades deben coincidir con el servicio
+                departamento.numero = num;
+                departamento.nombre = nom;
+                departamento.localidad = loc;
+                //el objeto cerado debemos transformalro al formato
+                //del servicio : JSON
+                //para transformar a json : JSON.stringfy(OBJETO)
+                var dataJson = JSON.stringify(departamento);
+                console.log(dataJson);
+                //las peticiones no get utilizan $.ajax
+                //si enviamos informacion al servicio debemos
+                //incluir dos elementos mas dentro de $.ajax
+                // contentType : el tipo de dato a enviar
+                //--data el objeto a enviar
+                var request = "/api/departamentos";
+                $.ajax({
+                    "url": url + request,
+                    "type": "POST",
+                    "data": dataJson,
+                    "contentType": "application/json",
+                    success: function () {
+                        console.log("insertado");
+                        cargarDepartamentos();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

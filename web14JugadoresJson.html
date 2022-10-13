@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jugadores JSON</title>
+</head>
+<body>
+    <h1>Jugadores JSON</h1>
+    <select  id="selectJugadores"></select>
+    <div id="contenido"></div>
+    <script src="js/jquery-3.6.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            //Al seleccionar un elemento en el option mostramos los datos del jugador
+            //No existen busquedas, debemos leer todo y dibujar uno
+            $("#selectJugadores").change(function() {
+                
+                //Recuperamos el indice del elemento seleccionado
+                var indice = $(this).prop("selectedIndex");
+
+                //Debemos acceder de nuevo al servicio (ahora con ajax)
+                $.ajax({
+                    "url" : "documents/jugadores.json",
+                    "method" : "GET",
+                    success : function(data){
+                        //Lo cogemos como un array (no hace falta poner entre comillado en success)
+                        var jugador = data.jugadores[indice];
+
+                        //Dibujamos en el hmtl
+                        var html = "<h1>" + jugador.nombre + "</h1>";
+                        html += "<h1>Posicion:"  + jugador.posicion + "</h1>";
+                        html += "<h1>Edad:"  + jugador.edad + "</h1>";
+                        html+="<img src='"+jugador.imagen+"' style='width:150px; height: 150px'/>";
+
+                        //Lo pintamos
+                        $("#contenido").html(html);
+                    }
+                });
+
+            });
+
+            //Al iniciar leemos todos los jugadores
+            //Y los guardamos en el <select>
+            $.getJSON("documents/jugadores.json", function(data) {
+
+                //Recorremos y leemos todos los jugadores
+                $.each(data.jugadores, function(index, jugador) {
+                    //Creamos la variable para recoger los nombres de los jugadores
+                    var nombre = jugador.nombre;
+                    //Creamos un <option> por cada jugador
+                    var option = $("<option>", {
+                        //Le damos el valor del nombre del jugador
+                        "text": nombre,
+                    });
+                    //Metemos los jugadores en el select
+                    $("#selectJugadores").append(option);
+                });
+
+
+                   
+
+            });
+        });
+       
+
+    </script>
+</body>
+</html>
