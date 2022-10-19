@@ -41,17 +41,23 @@
          var urlHospital = "https://apicrudhospital.azurewebsites.net/" ;
          //Creamos la funcion para cargar la tabla con los hospitales
          function cargarHospital() {
+            //Creamos la peticion necesaria para el get
             var request = "/webresources/hospitales";
+            //Realizamos el ajax
             $.ajax({
+                //Recogemos la url y la peticion
                 "url": urlHospital + request,
+                //Definimos su metodo
                 "method": "GET",
+                //Definimos su tipo de datos
                 "dataType": "json",
+                //Creamos la funcion para crear
                 success: function (data) {
                     //Creamos la variable html para escribir la tabla
                     var html = "";
                     //Creamos la tabla recorriendo los datos de la api
                     $.each(data, function (index, hospital) {
-                        //Vamos a crear el boton con su funcionn anonima para el clickado del boton de modificar
+                        //Vamos a crear el boton con su funcion anonima para el clickado del boton de modificar
                         var btnModificar =  
                         $("<button>",
                              {"text": "Modificar",
@@ -64,11 +70,13 @@
                                 var camas = $("#cajaCamas").val();
                                 //Creamos el nuevo objeto hospital
                                 var hospital = new Object();
+                                //Añadimos los atributos de hospital al nuevo objeto hospital
                                 hospital.idhospital = id;
                                 hospital.nombre = nom;
                                 hospital.direccion = dir;
                                 hospital.telefono = telef;
                                 hospital.camas = camas;
+                                //Hacemos el stringify a hospital
                                 var dataJson = JSON.stringify(hospital);                            
                                 $.ajax({
                                     //Metemos la url completa para modificar(put)
@@ -83,7 +91,8 @@
                                     }
                                 });
                             });
-                        //Vamos a crear el boton con su funcionn anonima para el clickado del boton de modificar
+                            
+                        //Vamos a crear el boton con su funcionn anonima para el clickado del boton de eliminar
                         var btnEliminar = $("<button>", {"text": "Eliminar", "value":hospital.idhospital}).click(function(){
                             var urlHospital = "https://apicrudhospital.azurewebsites.net/" ;
                             //Definimos una variable con el id para luego usarla en la peticion
