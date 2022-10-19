@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB 17 HOSPITALES</title>
+</head>
+<body>
+    <h1>HOSPITALES</h1>
+    <label>Id Hospital:</label>
+    <input type="text" id="cajaId">
+    <label>Nombre:</label>
+    <input type="text" id="cajaNombre">
+    <label>Telefono:</label>
+    <input type="text" id="cajaTelefono">
+    <label>Direccion:</label>
+    <input type="text" id="cajaDireccion">
+    <label>Camas:</label>
+    <input type="text" id="cajaCamas">
+    <button type="button" id="botonInsertar">Insertar</button>
+<hr>
+    <table border="1" id="tablaHospitales">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Dirección</th>
+                <th>Telefono</th>
+                <th>Camas</th>
+                <th>Modificar</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="js/jquery-3.6.1.min.js"></script>
+    <script>
+        //Creamos la variable con la url
+         var urlHospital = "https://apicrudhospital.azurewebsites.net/" ;
+         //Creamos la funcion para cargar la tabla con los hospitales
+         function cargarHospital() {
+            var request = "/webresources/hospitales";
+            $.ajax({
+                "url": urlHospital + request,
+                "method": "GET",
+                "dataType": "json",
+                success: function (data) {
+                    //Creamos la variable html para escribir la tabla
+                    var html = "";
+                    //Creamos la tabla recorriendo los datos de la api
+                    $.each(data, function (index, hospital) {
+                        //Vamos a crear el boton con su funcionn anonima para el clickado del boton de modificar
+                        var btnModificar =  
+                        $("<button>",
+                             {"text": "Modificar",
+                             "value":hospital.idhospital}).click(function(){
+                                //Definimos las variables con los datos de los hospitales recogidos en la tabla atraves de los id
+                                var id = parseInt($("#cajaId").val());
+                                var nom = $("#cajaNombre").val();
+                                var dir = $("#cajaDireccion").val();
+                                var telef = $("#cajaTelefono").val();
+                                var camas = $("#cajaCamas").val();
+                                //Creamos el nuevo objeto hospital
+                                var hospital = new Object();
+                                hospital.idhospital = id;
+                                hospital.nombre = nom;
+                                hospital.direccion = dir;
+                                hospital.telefono = telef;
+                                hospital.camas = camas;
+                                var dataJson = JSON.stringify(hospital);                            
+                                $.ajax({
+                                    //Metemos la url completa para modificar(put)
+                                    "url":"https://apicrudhospital.azurewebsites.net/webresources/hospitales/put",
+                                    "type":"PUT",
+                                    "data":dataJson,
+                                    "contentType":"application/json",
+                                    success:function(){
+                                        console.log("Modificado");
+                                        $("#tablaHospitales tbody").html("");
+                                        cargarHospital();
+                                    }
+                                });
+                            });
+                        //Vamos a crear el boton con su funcionn anonima para el clickado del boton de modificar
+                        var btnEliminar = $("<button>", {"text": "Eliminar", "value":hospital.idhospital}).click(function(){
+                            var urlHospital = "https://apicrudhospital.azurewebsites.net/" ;
+                            //Definimos una variable con el id para luego usarla en la peticion
+                            var id = parseInt($(this).val());
+                            //Defimos la peticion y añadimos el id ya que era necesario y lo requeria su ruta
+                            var request = "webresources/hospitales/delete/" + id;
+                            console.log(id);
+                            $.ajax({
+                                "url": urlHospital + request,
+                                "type": "DELETE",
+                                success: function(){
+                                    //Eliminamod el contenido
+                                    $("#tablaHospitales tbody").html("")
+                                    console.log("Eliminado");
+                                    cargarHospital();
+                                }
+                            });
+                        });
+                        
+                        //Creamos la tabla definiendo objetos
+                        //Definimos y recogemos todas las variables para que actuen como objetos
+                        var trTabla = $("<tr>");
+                        var celdaId = $("<td>",{"text": hospital.idhospital});
+                        var celdaNombre = $("<td>",{"text": hospital.nombre});
+                        var celdaDireccion = $("<td>",{"text": hospital.direccion});
+                        var celdaTelefono = $("<td>",{"text": hospital.telefono});
+                        var celdaCamas = $("<td>",{"text": hospital.camas});
+                        var celdaBtnMod = $("<td>");
+                        var celdaBtnElim = $("<td>");
+                        //Añadimos los botones a las celdas
+                        celdaBtnElim.append(btnEliminar);
+                        celdaBtnMod.append(btnModificar);
+                        //Añadimos a la tr creada las celdas con los id, nombre, direccion,telefono y camas
+                        trTabla.append(celdaId,celdaNombre,celdaDireccion,celdaTelefono,celdaCamas,celdaBtnMod,celdaBtnElim);
+                        // añadimos finalmente la tabla completaada a la tbody 
+                        $("#tablaHospitales tbody").append(trTabla);
+                        console.log(trTabla);
+                    });
+                }
+            });
+        }
+        $(document).ready(function () {
+            cargarHospital();
+            //Funcion paara el insertado de hospitales
+            $("#botonInsertar").click(function () {
+                //Definimos y recogemos las variables introducidas por el usuario
+                var id = parseInt($("#cajaId").val());
+                var nom = $("#cajaNombre").val();
+                var dir = $("#cajaDireccion").val();
+                var telef = $("#cajaTelefono").val();
+                var camas = $("#cajaCamas").val();
+                //debemos enviar un objeto json al metodo post
+                //creamos un nuevo objeto javascript
+                var hospital = new Object();
+                //las propiedades deben coincidir con el servicio
+                hospital.idhospital = id;
+                hospital.nombre = nom;
+                hospital.direccion = dir;
+                hospital.telefono = telef;
+                hospital.camas = camas;
+                var dataJson = JSON.stringify(hospital);
+                var request = "/webresources/hospitales/post";
+                //Creamos un ajax para que cargue
+                $.ajax({
+                    "url": urlHospital + request,
+                    "type": "POST",
+                    "data": dataJson,
+                    "contentType": "application/json",
+                    success: function () {
+                        console.log("insertado");
+                        cargarHospital();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
