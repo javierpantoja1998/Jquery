@@ -19,19 +19,24 @@
         $(document).ready(function(){       
             
             $("#botonCrear").click(function(){ 
-                //Reccogemos  los numeros input por el id
+                //Recogemos  los numeros input por el id y accedemos a su valor
                 var numeros = parseInt($("#cajaNumeros").val());
 
+                //Comprobamos que sean 8 numeros 
                 if(numeros >= 10000000 && numeros <= 99999999) {
 
+                    //Recogemos y definimos la letra
                     var letra = $("#cajaLetra").val();
-
+                    //Comprobamos que sea una sola letra y no mas letras
                     if( letra.length == 1){
                         //Definimos las variables para crear los parrafos y cambiar su fondo
                         var parrafoLetra = $("<p>",{"text": letra, "style": " color:white ;  background-color:black " });
                         var parrafoNumero =  $("<p>",{"text": numeros, "style": " color:white ;  background-color:black " });
+                        //Creamos el divisor para añadir los parrafos
                         var divisor = $("<div>");
+                        //Añadimos al elemento hijo(divisor) con append
                         divisor.append(parrafoNumero, parrafoLetra);
+                        //Añadimos al body el divisor
                         $("body").append(divisor);
 
 
