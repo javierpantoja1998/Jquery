@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Incremento salarial oficio empleados</h1>
+
+    <label>Seleccione un oficio:</label>
+    <select id="seleccion"></select>
+    <hr/>
+
+    <label>Incremeneto salarial:</label>
+    <input type="text" id="cajanumero">
+    <hr/>
+
+    <button id="boton">
+        Incrementar salarios
+    </button>
+    <hr/>
+
+    <table border="1" id="tablasalarios">
+        <thead>
+            <tr>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+    </table>
+
+    <script src="js/jquery-3.6.1.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            //variable de la url
+            var url = "https://apiempleadosaction.azurewebsites.net/";
+            //crear variabe request haciendo la lamada a la api de GET
+            var request = "api/Empleados/GetOficios/oficios";
+            //hacer la llamada de ajax para recuperar los datos
+                $.ajax({
+                    "url": url + request
+                    ,"method": "GET"
+                    ,"dataType":"json"
+                    ,success:function(data){
+                        // console.log(data);
+                        $.each(data, function(index,oficio){
+                            // console.log(oficio);
+                            //Creamos y recogemos las option (solo con oficio ya que devuelve solo un string)
+                            var opt1 = $("<option>", { "text": oficio, "value" : oficio});
+                            //Añadimos las options al select a traves de su id(#seleccion)
+                            $("#seleccion").append(opt1);
+                        });
+                    },"error":function(error){
+                            console.log("Error servicio CARGAR");
+                    }
+                });
+                //Funcion para el onclick del boton
+                $("#boton").click(function(){
+                    //Recogemos el incremento introducido en el input
+                    //Parseamos el valor para pasarlo a int
+                    var incremento = parseInt($("#cajanumero").val());
+
+                    //Recogemos la option seleccionada en el select
+                    var seleccion = $("select").val();
+
+                    //Recogemos la url y la request de nuevo(es metodo put)
+                    var url = "https://apiempleadosaction.azurewebsites.net/";
+                    var request = "api/Empleados/IncrementarSalarioOficios/"+seleccion+"/"+incremento;
+
+                    $.ajax({
+                        "url": url + request
+                        , "type": "PUT"
+                        , "contentType": "application/json"
+                        ,success:function(data){
+                            //La resquest para que te muestre la tabla con metodo get
+                            var request = "/api/Empleados/GetEmpleadosOficio/empleadosoficio/"+seleccion;
+                            $.ajax({
+                                "url": url + request
+                                ,"method": "GET"
+                                ,"dataType":"json"
+                                ,success:function(data){                              
+                                    //Creamos el tbody para escribir la tabla y que no se machaque
+                                    $("tbody").html("");
+                                    //Recorremos el array que nos pasa el metodo get
+                                    $.each(data, function(index,empleado){
+                                        var tbody = $("tbody");
+                                        //CREAMOS LOS ELEMENTOS DE LA TABLA
+                                        var fila = $("<tr>");
+                                        var col1 = $("<td>", { "text":  empleado.apellido});
+                                        var col2 = $("<td>", { "text":  empleado.oficio});
+                                        var col3 = $("<td>", { "text":  empleado.salario});
+                                        //Metemos los elementos de la tabla
+                                        //Primero al tbody
+                                        $("tbody").append(fila);
+                                        //Despues añadimos las columnas a las filas
+                                        $(fila).append(col1);
+                                        $(fila).append(col2);
+                                        $(fila).append(col3);
+                                    });
+                                }
+                            });
+                        },"error":function(error){
+                                console.log("Error servicio CARGAR");
+                        }
+                    });
+                    // console.log(seleccion,incremento);
+                });
+        });
+    </script>
+</body>
+</html>
